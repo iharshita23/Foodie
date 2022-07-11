@@ -39,6 +39,13 @@ dependencies:
   firebase_auth: ^3.3.19
   firebase_core_web: ^1.6.5
   blur: ^3.1.0
+  fluttertoast: ^8.0.9
+  location: ^4.4.0
+  cloud_firestore: ^3.1.18
+  provider: ^6.0.3
+  google_maps: ^6.2.0
+  google_maps_flutter: ^2.1.8
+  pay: ^1.0.10
 
 dev_dependencies:
   flutter_test:

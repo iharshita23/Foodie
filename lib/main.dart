@@ -1,13 +1,21 @@
 // ignore_for_file: prefer_const_constructors
 // 101383762760089087855 client ID
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:food_app/auth/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:food_app/config/color.dart';
+import 'package:food_app/providers/check_out_providers.dart';
+import 'package:food_app/providers/product_provider.dart';
+import 'package:food_app/providers/review_cart_provider.dart';
+import 'package:food_app/providers/user_provider.dart';
+import 'package:food_app/providers/wishlist_provider.dart';
+import 'package:provider/provider.dart';
 import 'screens/home_screen/home_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:blur/blur.dart';
- //lib/main.dart
+ 
 
 // void main() async{
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +55,39 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SignIn(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProductProvider>(
+          create: (context) => ProductProvider(),
+        ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider<ReviewCartProvider>(
+          create: (context) => ReviewCartProvider(),
+        ),
+        ChangeNotifierProvider<WishListProvider>(
+          create: (context) => WishListProvider(),
+        ),
+        ChangeNotifierProvider<CheckoutProvider>(
+          create: (context) => CheckoutProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+            primaryColor: primaryColor,
+            scaffoldBackgroundColor: ScaffoldBackgroundColor),
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapShot) {
+            if (snapShot.hasData) {
+              return HomeScreen();
+            }
+            return SignIn();
+          },
+        ),
+      ),
     );
   }
 }
