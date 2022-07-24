@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import '../../config/color.dart';
 import 'package:food_app/providers/user_provider.dart';
